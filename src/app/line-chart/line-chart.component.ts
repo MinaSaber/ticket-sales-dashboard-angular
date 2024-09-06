@@ -78,8 +78,8 @@ export class LineChartComponent implements OnInit, AfterViewInit {
                 x2: 0,
                 y2: 1,
                 colorStops: [
-                  { offset: 0, color: '#8a74f9' },
-                  { offset: 1, color: 'rgba(138, 116, 249, 0.2637)' },
+                  { offset: 0, color: 'rgba(138, 116, 249, 0.2637)' },
+                  { offset: 1, color: 'rgba(0, 0, 0, 0)' },
                 ],
               },
             },

@@ -35,7 +35,6 @@ export class TableViewComponent implements OnInit {
       { length: Math.ceil(this.totalItems / this.numberOfRowsSelected) },
       (_, i) => i + 1
     );
-    console.log(this.transliterateArabicToEnglish('مينا صابر'));
   }
 
   prevPage() {
@@ -86,6 +85,16 @@ export class TableViewComponent implements OnInit {
     `;
   }
 
+  sortTicketsByPrice() {
+    this.tickets.sort((a, b) => {
+      return this.sortAscending
+        ? a.ticketPrice - b.ticketPrice
+        : b.ticketPrice - a.ticketPrice;
+    });
+    this.sortAscending = !this.sortAscending;
+    this.updateTotalPages();
+  }
+
   transliterateArabicToEnglish(name: string): string {
     const transliterationMap: { [key: string]: string } = {
       ا: 'a',
@@ -127,20 +136,10 @@ export class TableViewComponent implements OnInit {
     };
 
     return name
-      .split(' ') // Split by space to get individual words
-      .map((word) => word[0]) // Take the first letter of each word
-      .map((char) => transliterationMap[char] || char) // Transliterate if necessary
+      .split(' ')
+      .map((word) => word[0])
+      .map((char) => transliterationMap[char] || char)
       .join('')
       .toUpperCase();
-  }
-
-  sortTicketsByPrice() {
-    this.tickets.sort((a, b) => {
-      return this.sortAscending
-        ? a.ticketPrice - b.ticketPrice
-        : b.ticketPrice - a.ticketPrice;
-    });
-    this.sortAscending = !this.sortAscending; // Toggle sorting order
-    this.updateTotalPages(); // Update pages to reflect sorting
   }
 }
