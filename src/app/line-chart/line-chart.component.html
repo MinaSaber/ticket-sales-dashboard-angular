@@ -1,1 +1,26 @@
-<p>line-chart works!</p>
+<div class="p-4 lg:p-8 bg-white">
+  <div class="flex flex-row justify-between items-center mb-4">
+    <div
+      class="flex flex-col gap-2 text-center lg:text-left font-neo-sans-arabic"
+    >
+      <p class="text-lg lg:text-xl font-neo-sans-arabic">
+        إحصائيات إستخدام القسيمة
+      </p>
+      <p class="text-sm lg:text-base font-neo-sans-arabic">
+        05 يوليو , 2023 - 05 أغسطس , 2023
+      </p>
+    </div>
+    <select
+      class="p-2 bg-gray-100 rounded-lg text-sm lg:text-base font-neo-sans-arabic"
+    >
+      <option *ngFor="let option of sortOptions" [value]="option">
+        {{ option }}
+      </option>
+    </select>
+  </div>
+  <div
+    #chartContainer
+    class="w-full h-64 lg:h-80"
+    style="position: relative; overflow: hidden"
+  ></div>
+</div>
