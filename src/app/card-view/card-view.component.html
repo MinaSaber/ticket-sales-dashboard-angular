@@ -1,1 +1,65 @@
-<p>card-view works!</p>
+<div class="rounded-lg h-full bg-[#8a74f9] flex flex-col justify-between">
+  <div class="flex flex-row py-5 px-8">
+    <div class="flex flex-col items-center mx-auto text-center md:text-left">
+      <p class="text-white text-lg md:text-xl font-neo-sans-arabic">
+        عرض التذكرة الخاصة بالفيلم
+      </p>
+      <p
+        class="rounded-lg p-2 flex flex-row gap-2 bg-white mt-4 mb-2 text-sm md:text-base"
+      >
+        {{ ticketUrl }}
+        <button
+          [ngClass]="{ 'pi-copy': !isCopied, 'pi-check': isCopied }"
+          class="ml-2 pi text-gray-700"
+          pTooltip="نسخ"
+          tooltipPosition="bottom"
+          (click)="copyTicketUrl()"
+        ></button>
+      </p>
+      <p class="text-white text-sm md:text-base font-neo-sans-arabic">
+        فعال حتي 23 يوليو 2023
+      </p>
+    </div>
+    <i
+      class="pi pi-trash text-white text-xl md:text-2xl mt-4 md:mt-0"
+      pTooltip="حذف"
+      tooltipPosition="bottom"
+      style="font-size: large"
+    ></i>
+  </div>
+
+  <div class="relative">
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="w-full border-t-2 border-dashed border-white"></div>
+    </div>
+
+    <div
+      class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white w-4 h-8 rounded-r-full hidden md:block"
+    ></div>
+
+    <div
+      class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white w-4 h-8 rounded-l-full hidden md:block"
+    ></div>
+  </div>
+
+  <div class="flex flex-row justify-between py-5 px-7">
+    <div class="text-white flex flex-row items-center lg:items-end gap-4">
+      <div class="text-center md:text-left mb-4 font-neo-sans-arabic">
+        <p class="text-sm md:text-base">خصم</p>
+        <p class="text-xl md:text-2xl">25%</p>
+      </div>
+      <button
+        class="border flex flex-row gap-2 items-center border-white px-2 rounded-md text-sm md:text-base mb-2 font-neo-sans-arabic"
+      >
+        <i class="pi pi-send text-base md:text-lg"></i>
+        مشاركة
+      </button>
+    </div>
+    <div class="mt-4 md:mt-0">
+      <qrcode
+        [qrdata]="'Your data string'"
+        [errorCorrectionLevel]="'M'"
+      ></qrcode>
+    </div>
+  </div>
+</div>

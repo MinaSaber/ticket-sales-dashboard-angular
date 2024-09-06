@@ -1,34 +1,131 @@
-<p-table [value]="tickets">
+<p-table
+  class="centered-table w-full"
+  [value]="
+    tickets.slice(
+      (currentPage - 1) * numberOfRowsSelected,
+      currentPage * numberOfRowsSelected
+    )
+  "
+  [rows]="numberOfRowsSelected"
+>
   <ng-template pTemplate="header">
-    <tr>
+    <tr class="border-b border-gray-200 text-sm lg:text-base">
+      <th>#</th>
       <th>المستخدم</th>
       <th>رقم التذكرة</th>
-      <th>قيمة التذكرة</th>
+      <th>
+        قيمة التذكرة
+        <button
+          class="bg-white rounded-md p-2"
+          (click)="sortTicketsByPrice()"
+          pTooltip="ترتيب"
+          tooltipPosition="bottom"
+        >
+          <i class="pi pi-sort-alt text-base lg:text-lg"></i>
+        </button>
+      </th>
       <th>السينمات</th>
       <th>الاشخاص</th>
       <th>عدد مرات الشراء</th>
       <th>التذكرة</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-ticket>
-    <tr>
-      <td class="flex flex-row">
+  <ng-template pTemplate="body" let-ticket let-i="rowIndex">
+    <tr class="border-b border-gray-200 text-sm lg:text-base">
+      <td>{{ i + 1 }}</td>
+      <td
+        class="flex flex-col lg:flex-row items-center lg:items-start gap-2 justify-center"
+      >
         <img
           *ngIf="ticket.user.photo"
           [src]="ticket.user.photo"
-          width="50"
-          height="50"
+          class="w-10 h-10 rounded-full object-cover"
         />
-        <div class="flex flex-col">
+        <div
+          *ngIf="!ticket.user.photo"
+          class="bg-red-700 w-10 h-10 rounded-full flex items-center justify-center"
+        >
+          <p class="text-white">
+            {{ transliterateArabicToEnglish(ticket.user.name) }}
+          </p>
+        </div>
+        <div class="flex flex-col text-center lg:text-left">
           <p>{{ ticket.user.name }}</p>
           <p>{{ ticket.user.mobileNumber }}</p>
         </div>
       </td>
-      <td>{{ ticket.ticketNumber }}</td>
-      <td>{{ ticket.ticketPrice }}</td>
+      <td>C-{{ ticket.ticketNumber }}</td>
+      <td>${{ ticket.ticketPrice }}</td>
       <td>{{ ticket.cinemas }}</td>
       <td>{{ ticket.peapleNumber }}</td>
       <td>{{ ticket.purchaseNumber }}</td>
+      <td class="flex flex-col lg:flex-row items-center gap-3">
+        <i class="pi pi-shopping-bag rounded-lg bg-gray-100 p-3"></i>
+        <div>
+          <p>تذكرة رقم {{ ticket.ticketNumber }}.pdf</p>
+          <p>9mb.PDF</p>
+        </div>
+        <button
+          class="border border-violet-500 bg-white rounded-md px-2 py-1 text-sm lg:text-base"
+          (click)="downloadTicket(ticket)"
+          pTooltip="تحميل"
+          tooltipPosition="bottom"
+        >
+          <i class="pi pi-download text-[#8a74f9]"></i>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <tr>
+      <td colspan="8" class="py-3 px-4">
+        <div
+          class="flex flex-col lg:flex-row justify-between items-center gap-4"
+        >
+          <div class="flex flex-row gap-2 items-center">
+            <p for="rowsPerPage" class="text-sm lg:text-base">عرض</p>
+            <select
+              [(ngModel)]="numberOfRowsSelected"
+              (change)="onRowsPerPageChange($event)"
+              class="border rounded p-1 text-sm lg:text-base"
+            >
+              <option *ngFor="let option of rowsOptions" [value]="option">
+                {{ option }}
+              </option>
+            </select>
+            <p class="text-sm lg:text-base">من أصل {{ tickets.length }}</p>
+          </div>
+          <div class="flex gap-2 items-center">
+            <button
+              (click)="prevPage()"
+              class="px-2 py-1 rounded text-sm lg:text-base"
+              [disabled]="currentPage === 1"
+              [ngClass]="currentPage === 1 ? 'opacity-50' : 'opacity-100'"
+            >
+              &lt;
+            </button>
+            <ng-container *ngFor="let page of totalPages">
+              <button
+                (click)="goToPage(page)"
+                class="px-2 py-1 rounded text-sm lg:text-base"
+                [ngClass]="{ 'bg-[#8a74f9] text-white': currentPage === page }"
+              >
+                {{ page }}
+              </button>
+            </ng-container>
+            <button
+              (click)="nextPage()"
+              class="px-2 py-1 rounded text-sm lg:text-base"
+              [disabled]="currentPage === totalPages.length"
+              [ngClass]="
+                currentPage === totalPages.length ? 'opacity-50' : 'opacity-100'
+              "
+            >
+              &gt;
+            </button>
+          </div>
+        </div>
+      </td>
     </tr>
   </ng-template>
 </p-table>
